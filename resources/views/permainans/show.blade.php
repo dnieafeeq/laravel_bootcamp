@@ -1,0 +1,3 @@
+Permainan ini...
+
+<li>{{$permainan->nama}} price: {{$permainan->harga}}, {{$permainan->syarikat}}, {{$permainan->jenis}}, {{$permainan->pub_date}}</li>
