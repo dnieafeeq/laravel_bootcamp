@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermainanController;
 
@@ -19,4 +20,6 @@ Route::get('/', function () {
 });
 
 Route::resource('permainans', PermainanController::class);
+
+Route::post('/uploadfile', [FailController::class, 'store'])->name('muatnaikFail');
 

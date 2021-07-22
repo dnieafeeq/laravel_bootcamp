@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Permainan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PermainanBaru;
 
 class PermainanController extends Controller
 {
@@ -14,9 +18,18 @@ class PermainanController extends Controller
      */
     public function index()
     {
+
+        $response = Http::get('https://swapi.dev/api/starships/?page=1');
+        $response_json = $response->json();
+        // die($response);
+
+
+        Storage::disk('local')->put('example.txt', 'Contents');
+
         $permainans = Permainan::all();
-        return view('permainans.index',[
-            'permainans'=>$permainans
+        return view('permainans.index', [
+            'permainans' => $permainans,
+            'dataAPI' => $response_json['results']
         ]);
     }
 
@@ -50,6 +63,11 @@ class PermainanController extends Controller
 
         $permainan->save();
 
+        # TO DO
+        # send email
+        $recipient=["mhdnkaze@gmail.com"];
+        Mail::to($recipient)->send(new PermainanBaru);
+
         return redirect('/permainans/');
     }
 
@@ -61,8 +79,8 @@ class PermainanController extends Controller
      */
     public function show(Permainan $permainan)
     {
-        return view('permainans.show',[
-            'permainan'=>$permainan
+        return view('permainans.show', [
+            'permainan' => $permainan
         ]);
     }
 
